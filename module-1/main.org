@@ -1,0 +1,415 @@
+#+NAME: Homework Assignment 01: Solution
+
+* Introduction
+
+  This is the solution to the first homework assignment.
+
+* Problem No. 1.1 : Repeat
+
+** Solution
+  The function =repeat= needs to take a particular object, obj and construct
+  a list containing n copies of said object.
+
+#+NAME: repeat
+#+BEGIN_SRC scheme
+ (define repeat
+    (λ (n obj)
+      (if (= n 0)
+          '()
+          (cons obj (repeat (- n 1) obj))
+          )
+      )
+    )
+#+END_SRC
+
+
+* Problem No. 1.2 : Invert
+
+** Solution
+  The =invert= function needs to invert each pair in the 2-list.
+
+#+NAME: invert
+#+BEGIN_SRC scheme
+(define invert
+  (λ (2-list)
+    (if (null? 2-list)
+        '()
+        (cons (list (car (cdr (car 2-list))) (car (car 2-list))) (invert (cdr 2-list)))
+        )
+    )
+  )
+#+END_SRC
+
+
+* Problem No. 1.3: Count Occurences
+
+** Solution
+
+
+#+NAME: count-occurences
+#+BEGIN_SRC scheme
+(define count-occurrences
+    (λ (el lst)
+      (if (null? lst)
+          0
+          (if (equal? el (car lst))
+              (+ 1 (count-occurrences el (cdr lst)))
+              (+ 0 (count-occurrences el (cdr lst)))
+              )
+          )
+      )
+    )
+#+END_SRC
+
+
+
+
+* Problem No. 1.4: Product
+
+** Solution
+
+
+#+NAME: product
+#+BEGIN_SRC scheme
+
+(define single-pairing
+    (λ (el lst)
+    (if (null? lst)
+        '()
+        (cons (list el (car lst)) (single-pairing el (cdr lst)))
+      )
+    )
+  )
+
+(define product-helper
+    (λ (lstl lstr)
+      (if (or (null? lstl) (null? lstr))
+          '()
+          (append (single-pairing (car lstl) lstr) (product-helper (cdr lstl) lstr))
+          )
+      )
+    )
+
+(define product
+    (λ (lstl lstr)
+      (if (or (null? lstl) (null? lstr))
+          (if (null? lstl) lstr lstl)
+          (product-helper lstl lstr)
+          )
+      )
+    )
+#+END_SRC
+
+
+* Problem No. 1.5: Every
+
+** Solution
+
+
+#+NAME: every
+#+BEGIN_SRC scheme
+(define every
+    (λ (pred lst)
+      (if (null? lst)
+          #t
+          (and (pred (car lst)) (every pred (cdr lst)))
+          )
+      )
+    )
+#+END_SRC
+
+
+* Problem No. 1.6: Merge
+
+** Solution
+
+
+#+NAME: merge
+#+BEGIN_SRC scheme
+(define merge
+    (λ (lstl lstr)
+      (if (or (null? lstl) (null? lstr))
+          (if (null? lstl) lstr lstl)
+          (if (< (car lstl) (car lstr))
+              (cons (car lstl) (merge (cdr lstl) lstr))
+              (cons (car lstr) (merge lstl (cdr lstr)))
+              )
+          )
+      )
+    )
+#+END_SRC
+
+* Problem 1.7: Flatten
+
+** Solution
+
+#+NAME: flatten
+#+BEGIN_SRC scheme
+(define flatten
+    (λ (obj)
+      (if (null? obj)
+          '()
+          (if (list? obj)
+              (append (flatten (car obj)) (flatten (cdr obj)))
+              (list obj)
+              )
+          )
+      )
+    )
+#+END_SRC
+
+* Problem No. 2.1: Preorder Traversal
+
+** Solution
+
+#+NAME: traverse/preorder
+#+BEGIN_SRC scheme
+(define traverse/preorder
+    (λ (tree)
+      (if (integer? tree)
+          (list tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) (list n))
+        (internal-node (value subtreel subtreer) (append (list value) (traverse/preorder subtreel) (traverse/preorder subtreer)))
+        )
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.2: Inorder
+** Solution
+
+#+NAME: traverse/inorder
+#+BEGIN_SRC scheme
+(define traverse/inorder
+    (λ (tree)
+      (if (integer? tree)
+          (list tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) (list n))
+        (internal-node (value subtreel subtreer) (append (traverse/inorder subtreel) (list value) (traverse/inorder subtreer)))
+        )
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.3: Postorder
+** Solution
+
+#+NAME: traverse/postorder
+#+BEGIN_SRC scheme
+(define traverse/postorder
+    (λ (tree)
+      (if (integer? tree)
+          (list tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) (list n))
+        (internal-node (value subtreel subtreer) (append (traverse/postorder subtreel) (traverse/postorder subtreer) (list value) ))
+        )
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.4: Count All Nodes
+** Solution
+
+#+NAME: count-nodes
+#+BEGIN_SRC scheme
+ (define count-nodes
+    (λ (tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) 1)
+        (internal-node (value subtreel subtreer) (+ 1 (count-nodes subtreel) (count-nodes subtreer)))
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.5: Count Leaf Nodes
+** Solution
+
+#+NAME: count-leaves
+#+BEGIN_SRC scheme
+(define count-leaves
+    (λ (tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) 1)
+        (internal-node (value subtreel subtreer) (+ (count-leaves subtreel) (count-leaves subtreer)))
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.6: Count Internal Nodes
+** Solution
+
+#+NAME: count-internal
+#+BEGIN_SRC scheme
+(define count-internal
+    (λ (tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) 0)
+        (internal-node (value subtreel subtreer) (+ 1 (count-internal subtreel) (count-internal subtreer)))
+      )
+    )
+    )
+#+END_SRC
+
+* Problem No. 2.7: Map
+** Solution
+
+#+NAME: tree/map
+#+BEGIN_SRC scheme
+(define tree/map
+    (λ (fn tree)
+      (cases full-binary-tree tree
+        (leaf-node (n) (leaf-node (fn n)))
+        (internal-node (value subtreel subtreer) (internal-node (fn value) (tree/map fn subtreel) (tree/map fn subtreer))))
+      )
+    )
+#+END_SRC
+
+* Problem No. 2.8: Value at Path
+** Solution
+
+#+NAME: value-at-path
+#+BEGIN_SRC scheme
+(define value-at-path
+    (λ (path tree)
+      (if (null? path)
+          (cases full-binary-tree tree
+            (leaf-node (n) n)
+            (internal-node (value subtreel subtreer) value)
+            )
+          (cases full-binary-tree tree
+            (leaf-node (n) '())
+            (internal-node (value subtreel subtreer)
+                           (if (equal? (car path) "left")
+                               (value-at-path (cdr path) subtreel)
+                               (value-at-path (cdr path) subtreer))
+                           )
+            )
+          )
+      )
+    )
+#+END_SRC
+
+* Problem No. 2.9: Search
+** Solution
+
+#+NAME: search
+#+BEGIN_SRC scheme
+(define traverse-path
+    (λ (term tree cur-path)
+      (cases full-binary-tree tree
+        (leaf-node (node) (if (equal? node term) cur-path '()))
+        (internal-node (value subtreel subtreer) (if (equal? value term)
+                                                     cur-path
+                                                     (append (traverse-path term subtreel (append cur-path (list "left")))
+                                                             (traverse-path term subtreer (append cur-path (list "right")))
+                                                             )
+                                                     )
+                       )
+        )
+      )
+    )
+(define search
+    (λ (term tree)
+      (traverse-path term tree '())
+      )
+    )
+#+END_SRC
+
+* Problem No. 2.10: Update
+** Solution
+
+#+NAME: update
+#+BEGIN_SRC scheme
+(define update
+    (λ (path func tree)
+      (cases full-binary-tree tree
+        (leaf-node (value) (lnode (if (null? path) (func value) value)))
+        (internal-node (value subtreel subtreer) (if (null? path)
+                                                     (inode (func value) subtreel subtreer)
+                                                     (if (equal? (car path) "left")
+                                                         (inode value (update (cdr path) func subtreel) subtreer)
+                                                         (inode value subtreel (update (cdr path) func subtreer))
+                                                         )
+                                                     )
+                       )
+        )
+      )
+    )
+#+END_SRC
+
+* Problem No. 2.11: Insert
+** Solution
+
+#+NAME: Insert
+#+BEGIN_SRC scheme
+
+#+END_SRC
+
+
+* Tangle
+  
+#+BEGIN_SRC scheme :noweb yes :tangle ./main.rkt
+#lang racket
+
+(require eopl)
+(require rackunit)
+(require rackunit/text-ui)
+(require "datatypes.rkt")
+
+<<repeat>>
+<<invert>>
+<<count-occurences>>
+<<product>>
+<<every>>
+<<merge>>
+<<flatten>>
+
+<<traverse/preorder>>
+<<traverse/inorder>>
+<<traverse/postorder>>
+
+<<count-nodes>>
+<<count-leaves>>
+<<count-internal>>
+
+<<tree/map>>
+<<value-at-path>>
+
+<<search>>
+<<update>>
+;;; <<tree/insert>>
+
+;;; exporting only the required function
+(provide repeat)
+(provide invert)
+(provide count-occurences)
+(provide product)
+(provide every)
+(provide merge)
+(provide flatten)
+
+(provide traverse/preorder)
+(provide traverse/inorder)
+(provide traverse/postorder)
+
+(provide count-nodes)
+(provide count-leaves)
+(provide count-internal)
+
+(provide tree/map)
+(provide value-at-path)
+
+(provide search)
+(provide update)
+;;; (provide tree/insert)
+#+END_SRC
+
+
